@@ -274,12 +274,12 @@ def main(args: Optional[List[str]] = None) -> int:
     if parsed_args.interactive:
         from pdf2zh.gui import setup_gui
 
-        if parsed_args.serverport:
-            setup_gui(
-                parsed_args.share, parsed_args.authorized, int(parsed_args.serverport)
-            )
-        else:
-            setup_gui(parsed_args.share, parsed_args.authorized)
+        port = (
+            int(parsed_args.serverport)
+            if parsed_args.serverport
+            else int(os.getenv("PORT") or 7860)
+        )
+        setup_gui(parsed_args.share, parsed_args.authorized, port)
         return 0
 
     if parsed_args.flask:
